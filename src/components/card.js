@@ -1,5 +1,6 @@
-export { creatCard, cardTemplate, deleteCard, like };
-
+export { creatCard, cardTemplate, deleteCard, like, createNewCard };
+import {inputCardName, inputURL, placesList, formElementNewPlase} from "../scripts/index";
+import {openImage} from "./modal";
 // @todo: Темплейт карточки
 
 const cardTemplate = document.querySelector("#card-template").content;
@@ -43,6 +44,18 @@ function deleteCard(cardElement) {
     btn.classList.toggle('card__like-button_is-active');
   }
 
+//добавление новой карточки  
 
+  function createNewCard (evt) {
+    evt.preventDefault();
+   
+    const cardData = {
+      name: inputCardName.value,
+      link: inputURL.value
+    }
+    
+    placesList.prepend(creatCard(cardData,deleteCard, openImage, like));
+    formElementNewPlase.reset();
+  };
 
 
