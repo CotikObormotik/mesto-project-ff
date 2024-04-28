@@ -1,28 +1,44 @@
-export {openPopup, closePopup, openImage, handleFormSubmitProfile as handleFormSubmit};
-import {popupTypeImage, popupImg, popupCapt, nameInput, jobInput, profileTitle, 
-    profileDescription} from "../scripts/index"
+export {openPopup, closePopup, handleFormSubmitProfile as handleFormSubmit, closePopupByEsc, closeByOverlay};
+import {nameInput, jobInput, profileTitle, profileDescription } from "../scripts/index"
 
+// закрытие попапа по кнопке
 
-//const cardTemplate = document.querySelector("#card-template").content;
+function closePopupByEsc (evt) {
+  if(evt.key === 'Escape') {
+    const moduls = Array.from(document.querySelectorAll('.popup'));
+    const popupOpend = moduls.find((openItem) => {
+      return openItem.classList.contains('popup_is-opened');
+    })
+    closePopup(popupOpend);
+    document.removeEventListener('keydown', closePopupByEsc);
+  }
+}
+
+//закрытие по Оверлею
+
+function closeByOverlay (evt) {
+  const moduls = Array.from(document.querySelectorAll('.popup'));
+  const popupOpend = moduls.find((openItem) => {
+    return openItem.classList.contains('popup_is-opened');
+  })
+    if(evt.target === popupOpend) {
+      closePopup(popupOpend);
+    }
+}
 
 //открытие попапов
 function openPopup (somePopup) {
     somePopup.classList.add('popup_is-opened');
+    document.addEventListener('keydown', closePopupByEsc);
+    document.addEventListener('click', closeByOverlay)
   }
 
 // закрытие попапов
 
   function closePopup (somePopup) {
     somePopup.classList.remove('popup_is-opened');
-  }
-
-// открытие попап картинок
-
-function openImage (imgSrc, captText) {
-    popupImg.src = imgSrc;
-    popupImg.alt = captText;
-    popupCapt.textContent = captText;
-    openPopup(popupTypeImage);
+    document.removeEventListener('keydown', closePopupByEsc);
+    document.removeEventListener('click', closeByOverlay)
   }
 
 //редактирование профиля

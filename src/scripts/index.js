@@ -1,10 +1,10 @@
 import "../pages/index.css";
 import { initialCards } from "./cards.js";
-import { creatCard, deleteCard, like, createNewCard } from "../components/card.js";
-import { openPopup, closePopup, openImage, handleFormSubmit } from "../components/modal";
+import { creatCard, deleteCard, like, openImage } from "../components/card.js";
+import { openPopup, closePopup, handleFormSubmit, closePopupByEsc, closeByOverlay } from "../components/modal";
 
 export {popupTypeImage, popupImg, popupCapt, nameInput, jobInput, profileTitle, 
-  profileDescription, inputCardName, inputURL, placesList, formElementNewPlase, popupButtonNewPlase};
+  profileDescription, inputCardName, inputURL, placesList, formElementNewPlase, popupButtonNewPlase, newCard, popupEdit, popups};
 
 // @todo: DOM узлы
 const placesList = document.querySelector(".places__list");
@@ -64,21 +64,25 @@ popupButtonNewPlase.addEventListener('click', () => {closePopup(newCard)});
 function setCloseEvent (popups) {
   popups.forEach((popup) => {
   const pop = popup.querySelector('.popup__close');
-  const closePopupByEsc = (evt) => {
-    if(evt.key === 'Escape') {
-      closePopup(popup);
-    }
-  };
   pop.addEventListener('click', () => {closePopup(popup)});
   document.addEventListener('keydown', closePopupByEsc);
-  document.addEventListener('click', (evt) => {
-    if(evt.target === popup) {
-      closePopup(popup);
-    }
-  })
+  document.addEventListener('click', closeByOverlay)
   });
 }
 
+//добавление новой карточки  
+
+function createNewCard (evt) {
+  evt.preventDefault();
+ 
+  const cardData = {
+    name: inputCardName.value,
+    link: inputURL.value
+  }
+  
+  placesList.prepend(creatCard(cardData, deleteCard, openImage, like));
+  formElementNewPlase.reset();
+};
 
 
 

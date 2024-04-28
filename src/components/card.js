@@ -1,6 +1,7 @@
-export { creatCard, cardTemplate, deleteCard, like, createNewCard };
-import {inputCardName, inputURL, placesList, formElementNewPlase} from "../scripts/index";
-import {openImage} from "./modal";
+export { creatCard, cardTemplate, deleteCard, like, openImage, };
+import { popupTypeImage, popupImg, popupCapt } from "../scripts/index";
+import {openPopup} from "./modal";
+
 // @todo: Темплейт карточки
 
 const cardTemplate = document.querySelector("#card-template").content;
@@ -44,18 +45,11 @@ function deleteCard(cardElement) {
     btn.classList.toggle('card__like-button_is-active');
   }
 
-//добавление новой карточки  
+// открытие попап картинок
 
-  function createNewCard (evt) {
-    evt.preventDefault();
-   
-    const cardData = {
-      name: inputCardName.value,
-      link: inputURL.value
-    }
-    
-    placesList.prepend(creatCard(cardData,deleteCard, openImage, like));
-    formElementNewPlase.reset();
-  };
-
-
+  function openImage (imgSrc, captText) {
+    popupImg.src = imgSrc;
+    popupImg.alt = captText;
+    popupCapt.textContent = captText;
+    openPopup(popupTypeImage);
+  }
