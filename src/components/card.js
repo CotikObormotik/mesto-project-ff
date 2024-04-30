@@ -1,6 +1,4 @@
-export { creatCard, cardTemplate, deleteCard, like, openImage, };
-import { popupTypeImage, popupImg, popupCapt } from "../scripts/index";
-import {openPopup} from "./modal";
+export { creatCard, deleteCard, like };
 
 // @todo: Темплейт карточки
 
@@ -45,11 +43,3 @@ function deleteCard(cardElement) {
     btn.classList.toggle('card__like-button_is-active');
   }
 
-// открытие попап картинок
-
-  function openImage (imgSrc, captText) {
-    popupImg.src = imgSrc;
-    popupImg.alt = captText;
-    popupCapt.textContent = captText;
-    openPopup(popupTypeImage);
-  }

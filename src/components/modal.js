@@ -1,5 +1,4 @@
-export {openPopup, closePopup, handleFormSubmitProfile as handleFormSubmit, closePopupByEsc, closeByOverlay};
-import {nameInput, jobInput, profileTitle, profileDescription } from "../scripts/index"
+export {openPopup, closePopup, closePopupByEsc, closeByOverlay};
 
 // закрытие попапа по кнопке
 
@@ -41,15 +40,7 @@ function openPopup (somePopup) {
     document.removeEventListener('click', closeByOverlay)
   }
 
-//редактирование профиля
 
-function handleFormSubmitProfile(evt) {
-    evt.preventDefault();
-    const nameValue = nameInput.value;
-    const jopValue = jobInput.value;
-    profileTitle.textContent = nameValue;
-    profileDescription.textContent = jopValue;
-  }
 
 
 

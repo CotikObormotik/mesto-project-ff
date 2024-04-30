@@ -1,10 +1,8 @@
 import "../pages/index.css";
 import { initialCards } from "./cards.js";
-import { creatCard, deleteCard, like, openImage } from "../components/card.js";
-import { openPopup, closePopup, handleFormSubmit, closePopupByEsc, closeByOverlay } from "../components/modal";
+import { creatCard, deleteCard, like,  } from "../components/card.js";
+import { openPopup, closePopup } from "../components/modal";
 
-export {popupTypeImage, popupImg, popupCapt, nameInput, jobInput, profileTitle, 
-  profileDescription, inputCardName, inputURL, placesList, formElementNewPlase, popupButtonNewPlase, newCard, popupEdit, popups};
 
 // @todo: DOM узлы
 const placesList = document.querySelector(".places__list");
@@ -45,7 +43,7 @@ const popupButtonProfile = formElementProfile.querySelector('.popup__button');
 nameInput.value = profileTitle.textContent;
 jobInput.value = profileDescription.textContent;
 
-formElementProfile.addEventListener('submit', handleFormSubmit);
+formElementProfile.addEventListener('submit', handleFormSubmitProfile);
 popupButtonProfile.addEventListener('click', () => {
   closePopup(popupEdit)});
 
@@ -63,10 +61,8 @@ popupButtonNewPlase.addEventListener('click', () => {closePopup(newCard)});
 
 function setCloseEvent (popups) {
   popups.forEach((popup) => {
-  const pop = popup.querySelector('.popup__close');
-  pop.addEventListener('click', () => {closePopup(popup)});
-  document.addEventListener('keydown', closePopupByEsc);
-  document.addEventListener('click', closeByOverlay)
+  const button = popup.querySelector('.popup__close');
+  button.addEventListener('click', () => {closePopup(popup)});
   });
 }
 
@@ -84,6 +80,21 @@ function createNewCard (evt) {
   formElementNewPlase.reset();
 };
 
+//Функция редактирование профиля
 
+function handleFormSubmitProfile(evt) {
+  evt.preventDefault();
+  const nameValue = nameInput.value;
+  const jopValue = jobInput.value;
+  profileTitle.textContent = nameValue;
+  profileDescription.textContent = jopValue;
+}
 
+//функция открытие попап картинок
 
+function openImage (imgSrc, captText) {
+  popupImg.src = imgSrc;
+  popupImg.alt = captText;
+  popupCapt.textContent = captText;
+  openPopup(popupTypeImage);
+}
