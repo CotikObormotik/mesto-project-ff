@@ -1,85 +1,107 @@
-export {showInputError, hideInputError, isValid, enableValidation};
+export { enableValidation, clearValidation };
 
 //показать ошибку
 
-function showInputError (form, input, errorMessage) {
-    const formError = form.querySelector(`.${input.id}-error`);
+function showInputError (input, errorMessage, validationConfig) {
+    const errorElement = input
+    .closest(validationConfig.formSelector)
+    .querySelector(`.popup__input_type_error-${input.name}`);
+    
+    input.classList.add(validationConfig.inputErrorClass);
 
-    input.classList.add('popup__input_type_error');
-    formError.textContent = errorMessage;
-    formError.classList.add('popup__input-error_active');
+    errorElement.textContent = errorMessage;
+
+    errorElement.classList.add(validationConfig.errorClass);
 }
 
 //скрыть ошибку
 
-function hideInputError (form, input) {
-    const formError = form.querySelector(`.${input.id}-error`);
+function hideInputError (input, validationConfig) {
+    const errorElement = input
+    .closest(validationConfig.formSelector)
+    .querySelector(`.popup__input_type_error-${input.name}`);
 
-    input.classList.remove('popup__input_type_error');
-    formError.textContent = '';
-    formError.classList.remove('popup__input-error_active');
+    input.classList.remove(validationConfig.inputErrorClass);
+
+    errorElement.textContent = '';
+
+    errorElement.classList.remove(validationConfig.errorClass);
 }
 
 //функция проверки
 
-function isValid (form, input) {
-    if(input.validity.patternMismatch) {
-        input.setCustomValidity(input.dataset.errorMessage);
-    }
-    else {
-        input.setCustomValidity('');
-    }
-
-    if(!input.validity.valid) {
-        showInputError(form, input, input.validationMessage);
-    }
-    else {
-        hideInputError(form, input);
-    }
+function isValid (input, validationConfig) {
+    if (input.validity.valueMissing) {
+        showInputError(input, "Вы пропустили это поле.", validationConfig);
+    
+        return false;
+      }
+    
+      if (input.validity.patternMismatch)
+      input.setCustomValidity(input.dataset.error);
+    else input.setCustomValidity("");
+  
+    if (input.validity.valid) hideInputError(input, validationConfig);
+    else showInputError(input, input.validationMessage, validationConfig);
+  
+    return true;  
 }
 
 // перебор всех инпутов
 
-function setEventListeners (form) {
-    const inputList = Array.from(form.querySelectorAll('.popup__input'));
-    const buttonElement = form.querySelector('.popup__button');
-    toggleButtonState(inputList, buttonElement);
+function setEventListeners (form, validationConfig) {
+    const submitButton = form.querySelector(
+        validationConfig.submitButtonSelector
+      );
+    
+      form.addEventListener("input", (evt) => {
+        const input = evt.target;
+        const isFormValid = form.checkValidity();
+    
+        isValid(input, validationConfig);
+        toggleButtonState(isFormValid, submitButton, validationConfig);
+});
 
-    inputList.forEach((inputElement) => {
-        inputElement.addEventListener('input', () => {
-            isValid(form, inputElement);
-            toggleButtonState(inputList, buttonElement);
-        })
-    })
+form.addEventListener("reset", () => clearValidation(form, validationConfig));
 }
 
 //перебор всех форм
 
-function enableValidation () {
-    const formList = Array.from(document.querySelectorAll('.popup__form'));
+function enableValidation (validationConfig) {
+    const forms = document.querySelectorAll(validationConfig.formSelector);
 
-    formList.forEach((formElement) => {
-        setEventListeners(formElement);
-    })
+    forms.forEach((form) => setEventListeners(form, validationConfig));
 }
 
 //проверка валидности инпутов
 
-function hasInvalidInput (inputList) {
+/*function hasInvalidInput (inputList) {
     return inputList.some((inputElement) => {
         return !inputElement.validity.valid;
     })
-}
+}*/
 
 // проверка кнопки 
 
-function toggleButtonState (inputList, buttonElement) {
-    if(hasInvalidInput(inputList)) {
+function toggleButtonState (valid, buttonElement, validationConfig) {
+    if (valid) {
+        buttonElement.removeAttribute("disabled");
+        buttonElement.classList.remove(validationConfig.inactiveButtonClass);
+      } else {
         buttonElement.disabled = true;
-        buttonElement.classList.add('popup__button-inactive')
-    }
-    else {
-        buttonElement.disabled = false;
-        buttonElement.classList.remove('popup__button-inactive')
-    }
+        buttonElement.classList.add(validationConfig.inactiveButtonClass);
+      }
 }
+
+// Сбросить валидацию
+
+function clearValidation(form, validationConfig) {
+    const inputs = form.querySelectorAll(validationConfig.inputSelector);
+    const submitButton = form.querySelector(
+      validationConfig.submitButtonSelector
+    );
+  
+    inputs.forEach((input) => hideInputError(input, validationConfig));
+    
+    toggleButtonState(false, submitButton, validationConfig);
+  }

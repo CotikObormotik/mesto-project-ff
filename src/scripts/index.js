@@ -2,7 +2,7 @@ import "../pages/index.css";
 import { initialCards } from "./cards.js";
 import { creatCard, deleteMyCard, changeLike } from "../components/card.js";
 import { openPopup, closePopup } from "../components/modal";
-import { enableValidation } from "../components/validation";
+import { enableValidation, clearValidation } from "../components/validation";
 import { getProfileInfo, getInitialCards, editProfileInfo, addCard, deleteCard, updateAvatar } from "../components/API";
 
 
@@ -91,10 +91,12 @@ function createNewCard (evt) {
         cardData, removeCard, openImage, changeLike, profileId
       );
       placesList.prepend(myNewCard); 
+      closePopup(newCard);
       formElementNewPlase.reset();
     })
     .catch((error) => console.error("Ошибка при добавлении карточки:", error))
     .finally(() => (popupButtonNewPlase.textContent = originalButtonText));
+    clearValidation(formElementNewPlase, validationConfig);
   /*const cardData = {
     name: inputCardName.value,
     link: inputURL.value
@@ -115,12 +117,16 @@ function handleFormSubmitProfile(evt) {
   .then((profileData) => {
     profileTitle.textContent = profileData.name;
     profileDescription.textContent = profileData.about;
+
+    closePopup(popupEdit);
+    formElementProfile.reset();
   })
   .catch((error) =>
   console.error("Ошибка получения данных пользователя:", error)
 )
   .finally(() => (popupButtonProfile.textContent = originalButtonText));
-
+  clearValidation(formElementProfile, validationConfig)
+  
   /*const nameValue = nameInput.value;
   const jopValue = jobInput.value;
   profileTitle.textContent = nameValue;
@@ -138,7 +144,18 @@ function openImage (imgSrc, captText) {
 
 //Валидация форм
 
-enableValidation ();
+//CSS-классы
+
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__input-error_active",
+}
+
+enableValidation (validationConfig);
 
 //api
 
@@ -184,9 +201,16 @@ Promise.all([getProfileInfo(), getInitialCards()])
         profileAvatarEditButton.style.backgroundImage = `url(\\${profileData.avatar})`;
   
         closePopup(popupAvatar);
+        formAvatar.reset();
       })
       .catch((error) =>
         console.error("Ошибка при получении данных пользователя:", error)
       )
       .finally(() => (buttonAvatarForm.textContent = originalButtonText));
+
+      clearValidation(formAvatar, validationConfig)
   }
+
+  clearValidation(formAvatar, validationConfig);
+  clearValidation(formElementProfile, validationConfig);
+  clearValidation(formElementNewPlase, validationConfig);

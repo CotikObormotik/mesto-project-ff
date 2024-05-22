@@ -50,10 +50,10 @@
               placeholder="Ссылка на картинку"
               required
               pattern="https?://.+"
-              data-error-message="Введите корректный URL"
+              data-error="Введите корректный URL"
             />
-            <span class="popup__input-error link-input-error"></span>
-            <button type="submit" class="button popup__button" disabled>
+            <span class="popup__input-error popup__input_type_error-link"></span>
+            <button type="submit" class="button popup__button" required>
               Сохранить
             </button>
           </form>
@@ -73,10 +73,10 @@
               minlength="2"
               maxlength="40"
               pattern="^[a-zA-Zа-яёА-ЯЁ\-\s]+$"
-              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+              data-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
-            <span class="popup__input-error name-input-error"></span>
+            <span class="popup__input-error popup__input_type_error-name"></span>
             <input
               id="description-input"
               type="text"
@@ -86,11 +86,11 @@
               minlength="2"
               maxlength="200"
               pattern="^[a-zA-Zа-яёА-ЯЁ\-\s]+$"
-              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+              data-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
-            <span class="popup__input-error description-input-error"></span>
-            <button type="submit" class="button popup__button" disabled>
+            <span class="popup__input-error popup__input_type_error-description"></span>
+            <button type="submit" class="button popup__button" required>
               Сохранить
             </button>
           </form>
@@ -108,10 +108,10 @@
               class="popup__input popup__input_type_card-name"
               placeholder="Название"
               pattern="^[a-zA-Zа-яёА-ЯЁ\-\s]+$"
-              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+              data-error="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
-            <span class="popup__input-error place-input-error"></span>
+            <span class="popup__input-error popup__input_type_error-place-name"></span>
             <input
               id="link-input"
               type="url"
@@ -119,11 +119,11 @@
               class="popup__input popup__input_type_url"
               placeholder="Ссылка на картинку"
               pattern="https?://.+"
-              data-error-message="Введите корректный URL"
+              data-error="Введите корректный URL"
               required
             />
-            <span class="popup__input-error link-input-error"></span>
-            <button type="submit" class="button popup__button" disabled>
+            <span class="popup__input-error popup__input_type_error-link"></span>
+            <button type="submit" class="button popup__button" required>
               Сохранить
             </button>
           </form>
