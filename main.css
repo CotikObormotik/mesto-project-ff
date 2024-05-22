@@ -940,17 +940,17 @@ template {
   margin-top: 48px;
 }
 
-.popup__button:not([disabled]):hover {
+.popup__button_disabled {
+  color: #c4c4c4;
+  border: 1px solid #c4c4c4;
+  background: transparent;
+  pointer-events: none;
+}
+
+.popup__button:hover {
   background: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
-
-.popup__button-inactive {
-  background-color: #FFFFFF;
-  color: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
 
 @media screen and (max-width: 568px) {
   .popup__button {
